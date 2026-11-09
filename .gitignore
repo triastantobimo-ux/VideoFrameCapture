@@ -1,0 +1,6 @@
+# FFmpeg binary (~217 MB) melebihi batas file GitHub 100 MB.
+# Unduh manual sesuai README.md bagian "Instalasi", taruh di Assets/Tools/ffmpeg.exe.
+Assets/Tools/ffmpeg.exe
+
+# Preferensi runtime per-pengguna (dibuat otomatis oleh aplikasi)
+videoframecapture.config.json
