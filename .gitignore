@@ -4,3 +4,6 @@ Assets/Tools/ffmpeg.exe
 
 # Preferensi runtime per-pengguna (dibuat otomatis oleh aplikasi)
 videoframecapture.config.json
+
+# Hasil compile installer Inno Setup (di-upload ke GitHub Releases)
+dist/

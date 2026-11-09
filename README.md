@@ -4,7 +4,7 @@ A native Windows desktop app that extracts frames from video files at a configur
 
 > In short: load a video → set FPS & format → Start capture → get a folder of numbered frames + an `index.html` gallery.
 
-**[⬇ Download the latest release](https://github.com/triastantobimo-ux/VideoFrameCapture/releases/latest)** — one zip, everything included (app + .NET runtime + FFmpeg). Extract and run.
+**[⬇ Download the latest release](https://github.com/triastantobimo-ux/VideoFrameCapture/releases/latest)** — one-click installer (`setup.exe`) or portable zip; both include everything (app + .NET runtime + FFmpeg).
 
 ---
 
@@ -13,7 +13,7 @@ A native Windows desktop app that extracts frames from video files at a configur
 - [Key Features](#key-features)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
-  - [Option A — Release bundle (recommended)](#option-a--release-bundle-recommended)
+  - [Option A — Release download (recommended)](#option-a--release-download-recommended)
   - [Option B — Clone the repo + manual FFmpeg](#option-b--clone-the-repo--manual-ffmpeg)
 - [Usage](#usage)
 - [Output](#output)
@@ -55,13 +55,22 @@ A native Windows desktop app that extracts frames from video files at a configur
 - Windows 10/11 **64-bit** (x64).
 - No .NET install needed — the runtime is bundled (self-contained).
 
-### Option A — Release bundle (recommended)
+### Option A — Release download (recommended)
 
-The easiest path: each [Release](https://github.com/triastantobimo-ux/VideoFrameCapture/releases) ships a complete portable bundle — app, .NET runtime, **and FFmpeg** — so nothing else needs to be downloaded.
+The easiest path: each [Release](https://github.com/triastantobimo-ux/VideoFrameCapture/releases) ships complete bundles — app, .NET runtime, **and FFmpeg** — so nothing else needs to be downloaded. Pick one:
 
-1. Download **`VideoFrameCapture-<version>-win-x64.zip`** from the [latest release](https://github.com/triastantobimo-ux/VideoFrameCapture/releases/latest).
-2. Extract the zip anywhere (e.g. `D:\Apps\VideoFrameCapture`).
-3. Double-click **`VideoFrameCapture.exe`**. Done.
+**A1. One-click installer** — `VideoFrameCapture-<version>-setup.exe`
+
+1. Download and run the setup executable.
+2. Follow the wizard (optionally create a desktop shortcut).
+3. Launch from the Start Menu — or let the installer start it for you.
+
+Installs per-user to `%LOCALAPPDATA%\Programs\VideoFrameCapture` — **no admin rights required**, and a standard uninstaller is registered in Windows Settings.
+
+**A2. Portable zip** — `VideoFrameCapture-<version>-win-x64.zip`
+
+1. Download and extract anywhere (e.g. `D:\Apps\VideoFrameCapture`).
+2. Double-click **`VideoFrameCapture.exe`**. Done — no installation at all.
 
 > If Windows SmartScreen appears (the app is not code-signed), click **More info → Run anyway**.
 
@@ -154,7 +163,7 @@ Everything can also be changed from the app menu (Theme, Language, New Session, 
 
 ## Repository Notes
 
-- This repo contains a **ready-to-run build** (self-contained win-x64 publish output), not source code.
+- This repo contains a **ready-to-run build** (self-contained win-x64 publish output), not source code. The Inno Setup script [VideoFrameCapture.iss](VideoFrameCapture.iss) is included so the installer can be rebuilt with `ISCC.exe VideoFrameCapture.iss`.
 - **`Assets/Tools/ffmpeg.exe` is not committed to git** because it is ~217 MB, over GitHub's 100 MB per-file limit. It is excluded via [.gitignore](.gitignore) and distributed through the **[release bundles](https://github.com/triastantobimo-ux/VideoFrameCapture/releases)** instead (release assets allow up to 2 GB per file).
 - `videoframecapture.config.json` is also untracked because it holds per-user preferences; the app creates it automatically on first run.
 
