@@ -4,6 +4,8 @@ A native Windows desktop app that extracts frames from video files at a configur
 
 > In short: load a video → set FPS & format → Start capture → get a folder of numbered frames + an `index.html` gallery.
 
+**[⬇ Download the latest release](https://github.com/triastantobimo-ux/VideoFrameCapture/releases/latest)** — one zip, everything included (app + .NET runtime + FFmpeg). Extract and run.
+
 ---
 
 ## Table of Contents
@@ -11,14 +13,12 @@ A native Windows desktop app that extracts frames from video files at a configur
 - [Key Features](#key-features)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
-  - [1. Get the app](#1-get-the-app)
-  - [2. Download FFmpeg (required)](#2-download-ffmpeg-required)
-  - [3. Place ffmpeg.exe in the right folder](#3-place-ffmpegexe-in-the-right-folder)
-  - [4. Run the app](#4-run-the-app)
+  - [Option A — Release bundle (recommended)](#option-a--release-bundle-recommended)
+  - [Option B — Clone the repo + manual FFmpeg](#option-b--clone-the-repo--manual-ffmpeg)
 - [Usage](#usage)
 - [Output](#output)
 - [Settings](#settings)
-- [Repository Notes (why ffmpeg.exe is not included)](#repository-notes)
+- [Repository Notes (why ffmpeg.exe is not in git)](#repository-notes)
 - [Third-Party Licenses](#third-party-licenses)
 
 ---
@@ -41,8 +41,8 @@ A native Windows desktop app that extracts frames from video files at a configur
 | Component | Details |
 |---|---|
 | UI | WPF + [WPF-UI](https://github.com/lepoco/wpfui) 4.3.0 (Fluent 2 / Windows 11 style) |
-| Runtime | .NET 10 (`net10.0-windows`, win-x64) — **self-contained**, runtime included in this repo |
-| Engine | [FFmpeg](https://ffmpeg.org/) full build (maximum format support and performance) |
+| Runtime | .NET 10 (`net10.0-windows`, win-x64) — **self-contained**, runtime included |
+| Engine | [FFmpeg](https://ffmpeg.org/) 9.0.2 full build (maximum format support and performance) |
 | MVVM helpers | [CommunityToolkit.Mvvm](https://github.com/CommunityToolkit/dotnet) 8.4.0 |
 | Output | Numbered PNG/JPEG frames + an HTML gallery per batch |
 
@@ -54,36 +54,43 @@ A native Windows desktop app that extracts frames from video files at a configur
 
 - Windows 10/11 **64-bit** (x64).
 - No .NET install needed — the runtime is bundled (self-contained).
-- A one-time internet connection to download FFmpeg (step 2).
 
-### 1. Get the app
+### Option A — Release bundle (recommended)
 
-Clone this repository, or download the ZIP via **Code → Download ZIP** on GitHub and extract it:
+The easiest path: each [Release](https://github.com/triastantobimo-ux/VideoFrameCapture/releases) ships a complete portable bundle — app, .NET runtime, **and FFmpeg** — so nothing else needs to be downloaded.
+
+1. Download **`VideoFrameCapture-<version>-win-x64.zip`** from the [latest release](https://github.com/triastantobimo-ux/VideoFrameCapture/releases/latest).
+2. Extract the zip anywhere (e.g. `D:\Apps\VideoFrameCapture`).
+3. Double-click **`VideoFrameCapture.exe`**. Done.
+
+> If Windows SmartScreen appears (the app is not code-signed), click **More info → Run anyway**.
+
+### Option B — Clone the repo + manual FFmpeg
+
+The git repository contains the ready-to-run build **without** `ffmpeg.exe`, because that file is ~217 MB (over GitHub's 100 MB per-file git limit). It lives in the release bundles instead. If you prefer cloning:
+
+**1. Clone:**
 
 ```bash
 git clone https://github.com/triastantobimo-ux/VideoFrameCapture.git
 ```
 
-### 2. Download FFmpeg (required)
-
-`ffmpeg.exe` is the app's main engine and is **intentionally not included in this repo** because it is ~217 MB (over GitHub's 100 MB per-file limit). Download it manually from one of these official sources:
+**2. Download FFmpeg** from one of these official sources:
 
 | Source | Link | Notes |
 |---|---|---|
-| **gyan.dev (recommended)** | <https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z> | *Full build* — same as the one used during development (v9.0.2-full). Widest codec support. |
+| **gyan.dev (recommended)** | <https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-full.7z> | *Full build* — same as the one bundled in releases (v9.0.2-full). Widest codec support. |
 | gyan.dev (smaller) | <https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip> | *Essentials build* (~80 MB) — enough for common formats (MP4/MKV/WebM). |
 | BtbN (GitHub) | <https://github.com/BtbN/FFmpeg-Builds/releases/latest> | Pick `ffmpeg-master-latest-win64-gpl.zip`. |
 | Official FFmpeg page | <https://ffmpeg.org/download.html#build-windows> | Lists all Windows build providers. |
 
-**WinGet alternative** (the app also auto-detects FFmpeg installed via WinGet):
+WinGet alternative (the app also auto-detects FFmpeg installed via WinGet):
 
 ```powershell
 winget install --id Gyan.FFmpeg
 ```
 
-### 3. Place ffmpeg.exe in the right folder
-
-Extract the downloaded archive, take `ffmpeg.exe` (inside the `bin/` folder for gyan.dev builds), and place it at:
+**3. Place `ffmpeg.exe`** (inside `bin/` for gyan.dev archives) at:
 
 ```
 VideoFrameCapture\Assets\Tools\ffmpeg.exe
@@ -99,17 +106,13 @@ VideoFrameCapture/
 ├── Assets/
 │   ├── AppIcon.ico
 │   └── Tools/
-│       └── ffmpeg.exe             ← downloaded in step 2 (NOT in the repo)
+│       └── ffmpeg.exe             ← from the release zip, or downloaded manually
 └── videoframecapture.config.json  ← created automatically on first run
 ```
 
 > The app looks for FFmpeg in this order: `Assets\Tools\ffmpeg.exe` → the WinGet install location → `C:\ffmpeg\bin\ffmpeg.exe`. Placing it in `Assets\Tools` is the most portable option.
 
-### 4. Run the app
-
-Double-click **`VideoFrameCapture.exe`**. Nothing else to install.
-
-> If Windows SmartScreen appears (the app is not code-signed), click **More info → Run anyway**.
+**4. Run** `VideoFrameCapture.exe`.
 
 ---
 
@@ -152,10 +155,10 @@ Everything can also be changed from the app menu (Theme, Language, New Session, 
 ## Repository Notes
 
 - This repo contains a **ready-to-run build** (self-contained win-x64 publish output), not source code.
-- **`Assets/Tools/ffmpeg.exe` is not committed** because it is ~217 MB, over GitHub's 100 MB per-file limit. It is excluded via [.gitignore](.gitignore) and must be downloaded manually — see [Installation steps 2–3](#2-download-ffmpeg-required).
+- **`Assets/Tools/ffmpeg.exe` is not committed to git** because it is ~217 MB, over GitHub's 100 MB per-file limit. It is excluded via [.gitignore](.gitignore) and distributed through the **[release bundles](https://github.com/triastantobimo-ux/VideoFrameCapture/releases)** instead (release assets allow up to 2 GB per file).
 - `videoframecapture.config.json` is also untracked because it holds per-user preferences; the app creates it automatically on first run.
 
 ## Third-Party Licenses
 
-- **FFmpeg** is licensed under the [GPL](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) (gyan.dev full build: GPLv3). FFmpeg is not distributed in this repo; users download it themselves from the official sources above.
+- **FFmpeg** is licensed under the [GPL](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html) (gyan.dev full build: GPLv3). It is distributed in the release bundles and downloadable from the official sources above.
 - **WPF-UI** — MIT, **CommunityToolkit.Mvvm** — MIT, **.NET** — MIT.
